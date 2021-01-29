@@ -3,17 +3,42 @@
 [ -e "env" ] && . ./env
 [ -z "$ARCH" ] && ARCH="x86_64"
 
+KBUILD_BUILD_USER=ach
+KBUILD_BUILD_VERSION=2
+KBUILD_BUILD_TIMESTAMP=`date +%Y%m%d%H%M%S`
+
+export ARCH
+export KBUILD_BUILD_USER
+export KBUILD_BUILD_VERSION
+export KBUILD_BUILD_TIMESTAMP
+
+build_deb ()
+{
+	local LOG=./log/build-$( date +%Y%m%d%H%M%S ).log
+	mkdir -p ./log && echo -n > $LOG
+	rm -f .config.old
+	echo > .scmversion
+	echo $KBUILD_BUILD_VERSION > .version
+	fakeroot make-kpkg \
+		--jobs 8 --initrd --arch=$ARCH kernel_image | tee -a $LOG
+}
+
 case $1 in
   clean)
-	ARCH=$ARCH make clean
+	make clean
 	;;
   lenovo)
 	cp arch/x86/configs/lenovo.config .config
-	ARCH=x86_64 make silentoldconfig
+	ARCH=x86_64 make olddefconfig
 	echo "ARCH=x86_64" > ./env
 	;;
+  esther)
+	cp arch/x86/configs/esther.config .config
+	ARCH=i386 make olddefconfig
+	echo "ARCH=i386" > ./env
+	;;
   menu)
-	ARCH=$ARCH make menuconfig
+	make menuconfig
 	;;
   ver)
 	VER=$2
@@ -21,22 +46,21 @@ case $1 in
 	echo > .scmversion
 	echo $VER > .version
 	;;
-  prep)
-	mkdir debian
-	sudo mount tmpfs ./debian -t tmpfs
-	sudo chown ach:ach debian
+  image)
+	make bzImage
+	;;
+  modules)
+	make modules
 	;;
   all)
-	ARCH=$ARCH make bzImage
-	ARCH=$ARCH make modules
+	make bzImage
+	make modules
 	;;
   deb)
-	#ARCH=$ARCH make silentoldconfig
-	#rm -f .config.old
-	fakeroot make-kpkg --jobs 8 --initrd --arch=$ARCH $OPTS kernel_image
+	build_deb
 	;;
   *)
-	echo "Usage: $0 {clean|lenovo|menu|ver|prep|all|deb}"
+	echo "Usage: $0 {clean|lenovo|menu|ver|image|modules|all|deb}"
 	exit 2
 	;;
 esac
