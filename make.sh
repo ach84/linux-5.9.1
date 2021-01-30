@@ -20,7 +20,8 @@ build_deb ()
 	echo > .scmversion
 	echo $KBUILD_BUILD_VERSION > .version
 	fakeroot make-kpkg \
-		--jobs 8 --initrd --arch=$ARCH kernel_image | tee -a $LOG
+		--overlay-dir scripts/deb \
+		--jobs 4 --initrd --arch=$ARCH kernel_image | tee -a $LOG
 }
 
 case $1 in
