@@ -3,6 +3,9 @@
 [ -e "env" ] && . ./env
 [ -z "$ARCH" ] && ARCH="x86_64"
 
+[ -z "$NICE" ] && NICE=19
+[ -z "$JOBS" ] && JOBS=4
+
 KBUILD_BUILD_USER=ach
 KBUILD_BUILD_VERSION=2
 KBUILD_BUILD_TIMESTAMP=`date +%Y%m%d%H%M%S`
@@ -21,7 +24,8 @@ build_deb ()
 	echo $KBUILD_BUILD_VERSION > .version
 	fakeroot make-kpkg \
 		--overlay-dir scripts/deb \
-		--jobs 4 --initrd --arch=$ARCH kernel_image | tee -a $LOG
+		--jobs $JOBS --initrd --arch=$ARCH \
+		kernel_image | tee -a $LOG
 }
 
 case $1 in
@@ -31,37 +35,39 @@ case $1 in
   lenovo)
 	cp arch/x86/configs/lenovo.config .config
 	ARCH=x86_64 make olddefconfig
+	echo > .scmversion
 	echo "ARCH=x86_64" > ./env
 	;;
   esther)
 	cp arch/x86/configs/esther.config .config
 	ARCH=i386 make olddefconfig
+	echo > .scmversion
 	echo "ARCH=i386" > ./env
 	;;
   menu)
 	make menuconfig
 	;;
-  ver)
-	VER=$2
-	[ -z "$VER" ] && VER=1
-	echo > .scmversion
-	echo $VER > .version
-	;;
   image)
-	make bzImage
+	nice -n $NICE make bzImage
 	;;
   modules)
-	make modules
+	nice -n $NICE make modules
 	;;
   all)
 	make bzImage
 	make modules
 	;;
+  install)
+	export INSTALL_MOD_STRIP=1
+	make modules_install
+	make install
+	rm -f /boot/*.old
+	;;
   deb)
 	build_deb
 	;;
   *)
-	echo "Usage: $0 {clean|lenovo|menu|ver|image|modules|all|deb}"
+	echo "Usage: $0 {clean|lenovo|menu|image|modules|all|deb}"
 	exit 2
 	;;
 esac
