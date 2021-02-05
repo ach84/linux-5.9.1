@@ -56,7 +56,7 @@
  *  more details.
  */
 
-#undef FBCONDEBUG
+#define FBCONDEBUG
 
 #include <linux/module.h>
 #include <linux/types.h>
@@ -83,7 +83,7 @@
 #include "fbcon.h"
 
 #ifdef FBCONDEBUG
-#  define DPRINTK(fmt, args...) printk(KERN_DEBUG "%s: " fmt, __func__ , ## args)
+#  define DPRINTK(fmt, args...) printk(KERN_INFO "%s: " fmt, __func__ , ## args)
 #else
 #  define DPRINTK(fmt, args...)
 #endif
@@ -1017,6 +1017,7 @@ static const char *fbcon_startup(void)
 	rows /= vc->vc_font.height;
 	vc_resize(vc, cols, rows);
 
+	DPRINTK("font:   %dx%d\n", vc->vc_font.width, vc->vc_font.height);
 	DPRINTK("mode:   %s\n", info->fix.id);
 	DPRINTK("visual: %d\n", info->fix.visual);
 	DPRINTK("res:    %dx%d-%d\n", info->var.xres,

@@ -7,13 +7,18 @@
 [ -z "$JOBS" ] && JOBS=4
 
 KBUILD_BUILD_USER=ach
-KBUILD_BUILD_VERSION=2
+KBUILD_BUILD_VERSION=3
 KBUILD_BUILD_TIMESTAMP=`date +%Y%m%d%H%M%S`
+
+[ $ARCH = i386 ] && CROSS_COMPILE=i686-linux-gnu-
+[ $ARCH = i386 ] && CC=i686-linux-gnu-gcc
 
 export ARCH
 export KBUILD_BUILD_USER
 export KBUILD_BUILD_VERSION
 export KBUILD_BUILD_TIMESTAMP
+export CROSS_COMPILE
+export CC
 
 build_deb ()
 {
@@ -25,7 +30,16 @@ build_deb ()
 	fakeroot make-kpkg \
 		--overlay-dir scripts/deb \
 		--jobs $JOBS --initrd --arch=$ARCH \
+		--cross_compile $CROSS_COMPILE \
 		kernel_image | tee -a $LOG
+}
+
+build_nice ()
+{
+	local LOG=./log/build-$( date +%Y%m%d%H%M%S ).log
+	mkdir -p ./log && echo -n > $LOG
+	[ -f .version ] && rm -f .version
+	time nice -n $NICE make $1 | tee -a $LOG
 }
 
 case $1 in
@@ -48,14 +62,14 @@ case $1 in
 	make menuconfig
 	;;
   image)
-	nice -n $NICE make bzImage
+	build_nice bzImage
 	;;
   modules)
-	nice -n $NICE make modules
+	build_nice make modules
 	;;
   all)
-	make bzImage
-	make modules
+	build_nice bzImage
+	build_nice modules
 	;;
   install)
 	export INSTALL_MOD_STRIP=1
@@ -64,7 +78,7 @@ case $1 in
 	rm -f /boot/*.old
 	;;
   deb)
-	build_deb
+	time build_deb
 	;;
   *)
 	echo "Usage: $0 {clean|lenovo|menu|image|modules|all|deb}"

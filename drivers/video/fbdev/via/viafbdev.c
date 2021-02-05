@@ -28,7 +28,7 @@ static int viafb_bpp1 = 32;
 static unsigned int viafb_second_offset;
 static int viafb_second_size;
 
-static int viafb_accel = 1;
+static int viafb_accel = 0;
 
 /* Added for specifying active devices.*/
 static char *viafb_active_dev;
@@ -1797,6 +1797,7 @@ int via_fb_pci_probe(struct viafb_dev *vdev)
 		parse_mode(viafb_mode1, viaparinfo->shared->iga2_devices,
 			&viafb_second_xres, &viafb_second_yres);
 
+	printk(KERN_INFO "viafb_pci_probe: %ux%u\n", default_xres, default_yres);
 	default_var.xres = default_xres;
 	default_var.yres = default_yres;
 	default_var.xres_virtual = default_xres;
@@ -2032,6 +2033,7 @@ int __init viafb_init(void)
 	printk(KERN_INFO
        "VIA Graphics Integration Chipset framebuffer %d.%d initializing\n",
 	       VERSION_MAJOR, VERSION_MINOR);
+	printk(KERN_INFO "viafb_init: '%s'\n", viafb_mode);
 	return r;
 }
 
