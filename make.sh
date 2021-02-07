@@ -23,14 +23,15 @@ export CC
 build_deb ()
 {
 	local LOG=./log/build-$( date +%Y%m%d%H%M%S ).log
+	local OPT=
 	mkdir -p ./log && echo -n > $LOG
 	rm -f .config.old
 	echo > .scmversion
 	echo $KBUILD_BUILD_VERSION > .version
+	[ -z "$CROSS_COMPILE" ] || OPT="--cross_compile $CROSS_COMPILE"
 	fakeroot make-kpkg \
 		--overlay-dir scripts/deb \
-		--jobs $JOBS --initrd --arch=$ARCH \
-		--cross_compile $CROSS_COMPILE \
+		--jobs $JOBS --initrd --arch=$ARCH $OPT \
 		kernel_image | tee -a $LOG
 }
 

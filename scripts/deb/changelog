@@ -1,6 +1,7 @@
 linux-source-5.9.1 (5.9.1-4) stable; urgency=critical
 
   * esther.config: CPUFREQ-->e_powersaver
+  * lenovo: --xcompile
 
  -- ach <adrian.chomicki@gmail.com>  Sat, 06 Feb 2021 02:42:25 +0100
 
