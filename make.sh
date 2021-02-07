@@ -13,6 +13,9 @@ KBUILD_BUILD_TIMESTAMP=`date +%Y%m%d%H%M%S`
 [ $ARCH = i386 ] && CROSS_COMPILE=i686-linux-gnu-
 [ $ARCH = i386 ] && CC=i686-linux-gnu-gcc
 
+[ $ARCH = x86_64 ] && CROSS_COMPILE=x86_64-linux-gnu-
+[ $ARCH = x86_64 ] && CC=x86_64-linux-gnu-gcc
+
 export ARCH
 export KBUILD_BUILD_USER
 export KBUILD_BUILD_VERSION
