@@ -7,7 +7,7 @@
 [ -z "$JOBS" ] && JOBS=4
 
 KBUILD_BUILD_USER=ach
-KBUILD_BUILD_VERSION=3
+KBUILD_BUILD_VERSION=4
 KBUILD_BUILD_TIMESTAMP=`date +%Y%m%d%H%M%S`
 
 [ $ARCH = i386 ] && CROSS_COMPILE=i686-linux-gnu-
@@ -65,7 +65,7 @@ case $1 in
 	build_nice bzImage
 	;;
   modules)
-	build_nice make modules
+	build_nice modules
 	;;
   all)
 	build_nice bzImage
