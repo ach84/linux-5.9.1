@@ -1,3 +1,11 @@
+linux-source-5.9.1 (5.9.1-5) stable; urgency=critical
+
+  * bluetooth|btusb: --btintel_set_debug_features
+  * video|logo: --fb_logo_late_init
+  * lenovo.config: AMD=n
+
+ -- ach <adrian.chomicki@gmail.com>  Tue, 09 Feb 2021 05:06:45 +0100
+
 linux-source-5.9.1 (5.9.1-4) stable; urgency=critical
 
   * esther.config: CPUFREQ-->e_powersaver

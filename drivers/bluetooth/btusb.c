@@ -2633,6 +2633,7 @@ static int btusb_setup_intel_new(struct hci_dev *hdev)
 		btintel_load_ddc_config(hdev, ddcname);
 	}
 
+#if 0
 	/* Read the Intel supported features and if new exception formats
 	 * supported, need to load the additional DDC config to enable.
 	 */
@@ -2640,6 +2641,7 @@ static int btusb_setup_intel_new(struct hci_dev *hdev)
 
 	/* Set DDC mask for available debug features */
 	btintel_set_debug_features(hdev, &features);
+#endif
 
 	/* Read the Intel version information after loading the FW  */
 	err = btintel_read_version(hdev, &ver);
