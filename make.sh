@@ -8,7 +8,7 @@
 
 KBUILD_BUILD_USER=ach
 KBUILD_BUILD_VERSION=5
-KBUILD_BUILD_TIMESTAMP=`date +%Y%m%d%H%M%S`
+KBUILD_BUILD_TIMESTAMP=$( date '+%Y-%m-%d %T' )
 
 [ $ARCH = i386 ] && CROSS_COMPILE=i686-linux-gnu-
 [ $ARCH = i386 ] && CC=i686-linux-gnu-gcc
