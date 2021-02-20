@@ -49,9 +49,16 @@ build_nice ()
 case $1 in
   clean)
 	make clean
+	rm -rf include/generated/*
 	;;
   lenovo)
 	cp arch/x86/configs/lenovo.config .config
+	ARCH=x86_64 make olddefconfig
+	echo > .scmversion
+	echo "ARCH=x86_64" > ./env
+	;;
+  asus)
+	cp arch/x86/configs/asus.config .config
 	ARCH=x86_64 make olddefconfig
 	echo > .scmversion
 	echo "ARCH=x86_64" > ./env
