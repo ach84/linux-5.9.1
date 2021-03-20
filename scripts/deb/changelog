@@ -1,3 +1,10 @@
+linux-source-5.9.1 (5.9.1-6) stable; urgency=critical
+
+  * wireless|realtek: --printk
+  * asus: --SECURITY_TOMOYO --SECURITY_SELINUX
+
+ -- Adrian Chomicki <adrian.chomicki@gmail.com>  Mon, 15 Mar 2021 16:30:55 +0100
+
 linux-source-5.9.1 (5.9.1-5) stable; urgency=critical
 
   * bluetooth|btusb: --btintel_set_debug_features

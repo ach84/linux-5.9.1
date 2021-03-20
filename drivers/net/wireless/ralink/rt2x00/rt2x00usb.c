@@ -522,9 +522,10 @@ EXPORT_SYMBOL_GPL(rt2x00usb_flush_queue);
 
 static void rt2x00usb_watchdog_tx_dma(struct data_queue *queue)
 {
+#if 0
 	rt2x00_warn(queue->rt2x00dev, "TX queue %d DMA timed out, invoke forced reset\n",
 		    queue->qid);
-
+#endif
 	rt2x00queue_stop_queue(queue);
 	rt2x00queue_flush_queue(queue, true);
 	rt2x00queue_start_queue(queue);
