@@ -1,3 +1,9 @@
+linux-source-5.9.1 (5.9.1-7) stable; urgency=critical
+
+  * lenovo: ++USB_MOUSE
+
+ -- Adrian Chomicki <adrian.chomicki@gmail.com>  Wed, 12 Jan 2022 01:28:16 +0100
+
 linux-source-5.9.1 (5.9.1-6) stable; urgency=critical
 
   * wireless|realtek: --printk
